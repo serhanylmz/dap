@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+@theme {
+  /* === Surfaces (warm archival paper) === */
+  --color-paper: #F2EEE3;
+  --color-paper-deep: #E7E2D2;
+  --color-paper-card: #FAF6EB;
+  --color-paper-shade: #D8D1BD;
+  --color-paper-tab: #2A271F;
+
+  /* === Ink === */
+  --color-ink: #0E0D0B;
+  --color-ink-soft: #26241D;
+  --color-mute: #6E6A5C;
+  --color-soft: #9B9682;
+  --color-faint: #C8C2AF;
+
+  /* === Hairlines === */
+  --color-rule: #BFB9A7;
+  --color-rule-soft: #DAD3C1;
+
+  /* === Accent — signal amber (used sparingly) === */
+  --color-accent: #B3380C;
+  --color-accent-deep: #6F2208;
+  --color-accent-pale: #EAD0B8;
+  --color-accent-wash: rgba(179, 56, 12, 0.08);
+
+  /* === Classified red (warnings, redactions) === */
+  --color-classified: #871F18;
+
+  /* === Type === */
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-fraunces);
+  --font-mono: var(--font-geist-mono);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+    font-size: 15px;
+  }
+
+  html {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(14, 13, 11, 0.045) 1px, transparent 0),
+      linear-gradient(
+        180deg,
+        var(--color-paper) 0%,
+        var(--color-paper) 80%,
+        var(--color-paper-deep) 100%
+      );
+    background-size: 14px 14px, 100% 100%;
+    background-attachment: fixed, scroll;
+  }
+
+  body {
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "ss01", "cv11", "ss03";
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Every page renders <main> directly inside body; flex-grow it so
+     sparse pages still fill the viewport instead of leaving a half-empty
+     paper background below the content. */
+  main {
+    flex: 1 0 auto;
+    width: 100%;
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 120ms ease;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.25em;
+    text-decoration-color: var(--color-accent);
+  }
+
+  /* Display serif — pushed into expressive territory.
+     Use sparingly: hero headlines, briefing output, occasional flourish. */
+  .font-display {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 144, "SOFT" 50, "WONK" 0;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+  .font-display-italic {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    font-style: italic;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+  }
+  .font-display-wonk {
+    font-family: var(--font-serif);
+    font-variation-settings: "opsz" 144, "SOFT" 100, "WONK" 1;
+    font-style: italic;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+}
+
+@layer components {
+  /* Dossier mono labels — appear above every section, file numbers, etc. */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .label-strong {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+
+  /* Classified stamp box */
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 7px;
+    border: 1px solid currentColor;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* Filed status badge — like a passport stamp */
+  .badge-amber {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 6px;
+    background: var(--color-accent);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    line-height: 1.3;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .badge-tab {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 9px;
+    background: var(--color-paper-tab);
+    color: var(--color-paper);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* Section header rule — horizontal line with text inset */
+  .rule-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 12px;
+  }
+  .rule-section::after {
+    content: "";
+    border-top: 1px solid var(--color-rule);
+  }
+
+  /* 4:5 portrait photo frame */
+  .portrait-frame {
+    aspect-ratio: 4 / 5;
+    background: var(--color-paper-card);
+    border: 1px solid var(--color-ink);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Crop registration marks at corners */
+  .registration::before,
+  .registration::after {
+    content: "";
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    border: 1px solid currentColor;
+  }
+  .registration::before {
+    top: -1px;
+    left: -1px;
+    border-right: none;
+    border-bottom: none;
+  }
+  .registration::after {
+    bottom: -1px;
+    right: -1px;
+    border-left: none;
+    border-top: none;
+  }
+
+  /* Soft amber wash for highlighted callouts */
+  .wash-amber {
+    background: var(--color-accent-wash);
+  }
+}
